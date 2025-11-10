@@ -4,7 +4,12 @@ class Cargo:
 
 
 class BaseRobot:
-    def __init__(self, name: str, weight: int, coords: iter = None) -> None:
+    def __init__(
+        self,
+        name: str,
+        weight: int,
+        coords: list | None = None
+    ) -> None:
         self.name = name
         self.weight = weight
         if coords is None:
@@ -12,35 +17,38 @@ class BaseRobot:
         else:
             self.coords = coords
 
-    def go_forward(self, scalar: int = 1) -> None:
-        self.coords[1] += scalar
+    def go_forward(self, step: int = 1) -> None:
+        self.coords[1] += step
 
-    def go_back(self, scalar: int = 1) -> None:
-        self.coords[1] -= scalar
+    def go_back(self, step: int = 1) -> None:
+        self.coords[1] -= step
 
-    def go_right(self, scalar: int = 1) -> None:
-        self.coords[0] += scalar
+    def go_right(self, step: int = 1) -> None:
+        self.coords[0] += step
 
-    def go_left(self, scalar: int = 1) -> None:
-        self.coords[0] -= scalar
+    def go_left(self, step: int = 1) -> None:
+        self.coords[0] -= step
 
     def get_info(self) -> str:
         return f'Robot: {self.name}, Weight: {self.weight}'
 
 
 class FlyingRobot(BaseRobot):
-    def __init__(self, name: str, weight: int, coords: iter = None) -> None:
+    def __init__(
+        self,
+        name: str,
+        weight: int,
+        coords: list | None = None
+    ) -> None:
+        if coords is None:
+            coords = [0, 0, 0]
         super().__init__(name, weight, coords)
-        if coords is None or len(coords) != 3:
-            self.coords = [0, 0, 0]
-        else:
-            self.coords = coords
 
-    def go_up(self, scalar: int = 1) -> None:
-        self.coords[2] += scalar
+    def go_up(self, step: int = 1) -> None:
+        self.coords[2] += step
 
-    def go_down(self, scalar: int = 1) -> None:
-        self.coords[2] -= scalar
+    def go_down(self, step: int = 1) -> None:
+        self.coords[2] -= step
 
 
 class DeliveryDrone(FlyingRobot):
@@ -49,7 +57,7 @@ class DeliveryDrone(FlyingRobot):
         name: str,
         weight: int,
         max_load_weight: int,
-        current_load: Cargo = None,
+        current_load: Cargo = Cargo | None,
         coords: iter = None
     ) -> None:
         super().__init__(name, weight, coords)
